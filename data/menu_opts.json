@@ -1,0 +1,20 @@
+{
+    "nombreApp" : "Componentes",
+    "rutas" : [
+        {
+            "ruta" : "subjects",
+            "icon" : "school_outlined",
+            "texto": "Materias"
+        },
+        {
+            "ruta" : "reminders",
+            "icon" : "access_alarm_outlined",
+            "texto": "Recordatorios"
+        },
+        {
+            "ruta" : "schedule",
+            "icon" : "date_range_outlined",
+            "texto": "Horario"
+        }
+    ]
+}
