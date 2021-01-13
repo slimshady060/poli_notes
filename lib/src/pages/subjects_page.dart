@@ -1,3 +1,4 @@
+import 'package:componentes/src/db/operationDB.dart';
 import 'package:flutter/material.dart';
 
 class SubjectsPage extends StatefulWidget {
@@ -24,6 +25,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
 }
 
 Widget _getSubjectsList() {
+  OperationDB.subjectsList();
   return Container(
       child: Center(
     child: ListView(
