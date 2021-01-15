@@ -1,4 +1,5 @@
 import 'package:componentes/src/db/operationDB.dart';
+import 'package:componentes/src/models/schedule.dart';
 import 'package:componentes/src/models/subject.dart';
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,6 @@ class _CreateSubjectPageState extends State<CreateSubjectPage> {
   String _subjectName;
   String _teacherName;
   String _subjectStatus;
-  String _myActivityResult;
   final formKey = new GlobalKey<FormState>();
   final startTime = TextEditingController();
   final endTime = TextEditingController();
@@ -30,21 +30,20 @@ class _CreateSubjectPageState extends State<CreateSubjectPage> {
   @override
   void initState() {
     super.initState();
-    _myActivityResult = '';
   }
 
-  TimeOfDay _timeStart = new TimeOfDay.now();
+  // TimeOfDay _timeStart = new TimeOfDay.now();
 
-  Future<Null> _selectTimeStart(BuildContext context) async {
-    final TimeOfDay picked =
-        await showTimePicker(context: context, initialTime: _timeStart);
-    if (picked != null && picked != _timeStart) {
-      print('Time selected ${_timeStart.toString()}');
-      setState(() {
-        _timeStart = picked;
-      });
-    }
-  }
+  // Future<Null> _selectTimeStart(BuildContext context) async {
+  //   final TimeOfDay picked =
+  //       await showTimePicker(context: context, initialTime: _timeStart);
+  //   if (picked != null && picked != _timeStart) {
+  //     print('Time selected ${_timeStart.toString()}');
+  //     setState(() {
+  //       _timeStart = picked;
+  //     });
+  //   }
+  // }
 
   String _opcionSeleccionada = 'Lunes';
 
@@ -93,15 +92,26 @@ class _CreateSubjectPageState extends State<CreateSubjectPage> {
           else if (_subjectStatus == null)
             {_showMyDialog('Estado')}
           else
-            {
-              OperationDB.insertSubject(Subject(
-                  name: _subjectName,
-                  teacher: _teacherName == null ? 'Desconocido' : _teacherName,
-                  state: _subjectStatus))
-            }
+            {insertData()}
         },
       ),
     );
+  }
+
+  insertData() async {
+    final subjectId = await OperationDB.insertSubject(Subject(
+        name: _subjectName,
+        teacher: _teacherName == null ? 'Desconocido' : _teacherName,
+        state: _subjectStatus));
+    if (subjectId != null) {
+      listOfColumns.forEach((element) {
+        OperationDB.insertSchedule(Schedule(
+            day: element['dia'],
+            startTime: element['horaInicio'],
+            endTime: element['horaFin'],
+            subjectId: subjectId));
+      });
+    }
   }
 
   Future<void> _showMyDialog(message) async {
@@ -403,14 +413,6 @@ class _CreateSubjectPageState extends State<CreateSubjectPage> {
   Widget scheduleTitle() {
     return Center(
       child: Text('Horario de la materia'),
-    );
-  }
-
-  Widget _imprimir() {
-    return ListTile(
-      title: Text('Nombre es: $_teacherName'),
-      subtitle: Text('Email: $_subjectStatus'),
-      trailing: Text(_myActivityResult),
     );
   }
 }
