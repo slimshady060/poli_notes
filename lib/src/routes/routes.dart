@@ -1,16 +1,16 @@
-import 'package:componentes/src/pages/create_subject.dart';
-import 'package:componentes/src/pages/login.page.dart';
-import 'package:componentes/src/pages/newuser.page.dart';
-import 'package:componentes/src/pages/reminders_page.dart';
-import 'package:componentes/src/pages/schedule_page.dart';
-import 'package:componentes/src/pages/subjects_page.dart';
 import 'package:flutter/material.dart';
-
-import 'package:componentes/src/pages/avatar_page.dart';
-import 'package:componentes/src/pages/home_page.dart';
-import 'package:componentes/src/pages/input_page.dart';
-import 'package:componentes/src/pages/slider_page.dart';
-import 'package:componentes/src/pages/listview_page.dart';
+import 'package:poli_notes/src/pages/avatar_page.dart';
+import 'package:poli_notes/src/pages/create_subject.dart';
+import 'package:poli_notes/src/pages/home_page.dart';
+import 'package:poli_notes/src/pages/input_page.dart';
+import 'package:poli_notes/src/pages/listview_page.dart';
+import 'package:poli_notes/src/pages/login.page.dart';
+import 'package:poli_notes/src/pages/newuser.page.dart';
+import 'package:poli_notes/src/pages/schedule_page.dart';
+import 'package:poli_notes/src/pages/slider_page.dart';
+import 'package:poli_notes/src/pages/subjects_page.dart';
+import 'package:poli_notes/src/screens/add_new_medicine/add_new_reminder.dart';
+import 'package:poli_notes/src/screens/reminder/reminder.dart';
 
 Map<String, WidgetBuilder> getApplicationRoutes() {
   return <String, WidgetBuilder>{
@@ -20,7 +20,9 @@ Map<String, WidgetBuilder> getApplicationRoutes() {
     'subjects': (BuildContext context) => SubjectsPage(),
     AvatarPage.pageName: (BuildContext context) => AvatarPage(),
     'schedule': (BuildContext context) => SchedulePage(),
-    'reminders': (BuildContext context) => RemindersPage(),
+    // 'reminders': (BuildContext context) => RemindersPage(),
+    'reminders': (BuildContext context) => Reminder(),
+    'addReminder': (BuildContext context) => AddNewReminder(),
     'createSubject': (BuildContext context) => CreateSubjectPage(),
     'inputs': (BuildContext context) => InputPage(),
     'slider': (BuildContext context) => SliderPage(),

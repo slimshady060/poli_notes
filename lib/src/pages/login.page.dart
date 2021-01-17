@@ -1,10 +1,10 @@
-import 'package:componentes/src/widget/button.dart';
-import 'package:componentes/src/widget/first.dart';
-import 'package:componentes/src/widget/inputEmail.dart';
-import 'package:componentes/src/widget/password.dart';
-import 'package:componentes/src/widget/textLogin.dart';
-import 'package:componentes/src/widget/verticalText.dart';
 import 'package:flutter/material.dart';
+import 'package:poli_notes/src/widget/button.dart';
+import 'package:poli_notes/src/widget/first.dart';
+import 'package:poli_notes/src/widget/inputEmail.dart';
+import 'package:poli_notes/src/widget/password.dart';
+import 'package:poli_notes/src/widget/textLogin.dart';
+import 'package:poli_notes/src/widget/verticalText.dart';
 
 class LoginPage extends StatefulWidget {
   @override

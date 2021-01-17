@@ -1,6 +1,6 @@
-import 'package:componentes/src/db/operationDB.dart';
-import 'package:componentes/src/models/schedule.dart';
 import 'package:flutter/material.dart';
+import 'package:poli_notes/src/db/operationDB.dart';
+import 'package:poli_notes/src/models/schedule.dart';
 
 class SchedulePage extends StatefulWidget {
   @override

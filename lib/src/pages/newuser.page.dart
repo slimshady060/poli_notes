@@ -1,11 +1,11 @@
-import 'package:componentes/src/widget/buttonNewUser.dart';
-import 'package:componentes/src/widget/newEmail.dart';
-import 'package:componentes/src/widget/newName.dart';
-import 'package:componentes/src/widget/password.dart';
-import 'package:componentes/src/widget/singup.dart';
-import 'package:componentes/src/widget/textNew.dart';
-import 'package:componentes/src/widget/userOld.dart';
 import 'package:flutter/material.dart';
+import 'package:poli_notes/src/widget/buttonNewUser.dart';
+import 'package:poli_notes/src/widget/newEmail.dart';
+import 'package:poli_notes/src/widget/newName.dart';
+import 'package:poli_notes/src/widget/password.dart';
+import 'package:poli_notes/src/widget/singup.dart';
+import 'package:poli_notes/src/widget/textNew.dart';
+import 'package:poli_notes/src/widget/userOld.dart';
 
 class NewUser extends StatefulWidget {
   @override

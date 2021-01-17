@@ -1,5 +1,5 @@
-import 'package:componentes/src/pages/newuser.page.dart';
 import 'package:flutter/material.dart';
+import 'package:poli_notes/src/pages/newuser.page.dart';
 
 class FirstTime extends StatefulWidget {
   @override

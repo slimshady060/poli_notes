@@ -1,6 +1,6 @@
-import 'package:componentes/src/models/schedule.dart';
-import 'package:componentes/src/models/subject.dart';
 import 'package:path/path.dart';
+import 'package:poli_notes/src/models/schedule.dart';
+import 'package:poli_notes/src/models/subject.dart';
 import 'package:sqflite/sqflite.dart';
 
 class OperationDB {
@@ -10,6 +10,8 @@ class OperationDB {
         'CREATE TABLE IF NOT EXISTS subjects (id INTEGER PRIMARY KEY, name TEXT, teacher TEXT, state TEXT)');
     await db.execute(
         'CREATE TABLE IF NOT EXISTS schedules (id INTEGER PRIMARY KEY AUTOINCREMENT, day TEXT, startTime TEXT, endTime TEXT, subjectId INT NOT NULL, FOREIGN KEY(subjectId) REFERENCES subjects(id))');
+    await db.execute(
+        "CREATE TABLE Pills (id INTEGER PRIMARY KEY, name TEXT, amount TEXT, type TEXT, howManyWeeks INTEGER, medicineForm TEXT, time INTEGER, notifyId INTEGER)");
   }
 
   static _onConfigure(Database db) async {
@@ -17,13 +19,42 @@ class OperationDB {
   }
 
   static Future<Database> _openDB() async {
-    return openDatabase(join(await getDatabasesPath(), 'polinotess.db'),
+    return openDatabase(join(await getDatabasesPath(), 'polinotes1.db'),
         onCreate: _onCreate, version: 1, onConfigure: _onConfigure);
   }
 
   static Future<int> insertSubject(Subject subject) async {
     Database db = await _openDB();
     return db.insert('subjects', subject.toMap());
+  }
+
+  static Future<int> insertData(String table, Map<String, dynamic> data) async {
+    Database db = await _openDB();
+    try {
+      return await db.insert(table, data);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  //get all data from database
+  static Future<List<Map<String, dynamic>>> getAllData(table) async {
+    Database db = await _openDB();
+    try {
+      return db.query(table);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  //delete data
+  static Future<int> deleteData(String table, int id) async {
+    Database db = await _openDB();
+    try {
+      return await db.delete(table, where: "id = ?", whereArgs: [id]);
+    } catch (e) {
+      return null;
+    }
   }
 
   static Future<void> insertSchedule(Schedule schedule) async {

@@ -1,9 +1,10 @@
-import 'package:componentes/src/db/operationDB.dart';
-import 'package:componentes/src/models/schedule.dart';
-import 'package:componentes/src/models/subject.dart';
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/material.dart';
+import 'package:poli_notes/src/db/operationDB.dart';
+import 'package:poli_notes/src/models/schedule.dart';
 import 'dart:async';
+
+import 'package:poli_notes/src/models/subject.dart';
 
 class CreateSubjectPage extends StatefulWidget {
   @override
