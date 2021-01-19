@@ -32,7 +32,7 @@ class FormFields extends StatelessWidget {
               decoration: InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
-                  labelText: "Pills Name",
+                  labelText: "Titulo",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(width: 0.5, color: Colors.grey))),
@@ -50,7 +50,7 @@ class FormFields extends StatelessWidget {
                   height: constrains.maxHeight * 0.22,
                   child: TextField(
                     controller: amountController,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w400,
@@ -58,7 +58,7 @@ class FormFields extends StatelessWidget {
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(
                             horizontal: 15.0, vertical: 20.0),
-                        labelText: "Pills Amount",
+                        labelText: "Descripción",
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide:
@@ -70,31 +70,31 @@ class FormFields extends StatelessWidget {
               SizedBox(
                 width: 10,
               ),
-              Flexible(
-                flex: 1,
-                child: Container(
-                  height: constrains.maxHeight * 0.22,
-                  child: DropdownButtonFormField(
-                    onTap: () => focus.unfocus(),
-                    decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                            horizontal: 15.0, vertical: 20.0),
-                        labelText: "Type",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide:
-                                BorderSide(width: 0.5, color: Colors.grey))),
-                    items: weightValues
-                        .map((weight) => DropdownMenuItem(
-                              child: Text(weight),
-                              value: weight,
-                            ))
-                        .toList(),
-                    onChanged: (value) => this.onPopUpMenuChanged(value),
-                    value: selectWeight,
-                  ),
-                ),
-              )
+              // Flexible(
+              //   flex: 1,
+              //   child: Container(
+              //     height: constrains.maxHeight * 0.22,
+              //     child: DropdownButtonFormField(
+              //       onTap: () => focus.unfocus(),
+              //       decoration: InputDecoration(
+              //           contentPadding: EdgeInsets.symmetric(
+              //               horizontal: 15.0, vertical: 20.0),
+              //           labelText: "Type",
+              //           border: OutlineInputBorder(
+              //               borderRadius: BorderRadius.circular(10.0),
+              //               borderSide:
+              //                   BorderSide(width: 0.5, color: Colors.grey))),
+              //       items: weightValues
+              //           .map((weight) => DropdownMenuItem(
+              //                 child: Text(weight),
+              //                 value: weight,
+              //               ))
+              //           .toList(),
+              //       onChanged: (value) => this.onPopUpMenuChanged(value),
+              //       value: selectWeight,
+              //     ),
+              //   ),
+              // )
             ],
           ),
           SizedBox(
@@ -106,7 +106,7 @@ class FormFields extends StatelessWidget {
               padding: const EdgeInsets.only(left: 12.0),
               child: FittedBox(
                 child: Text(
-                  "How long?",
+                  "Repetir?",
                   style: TextStyle(
                       color: Colors.grey[800],
                       fontSize: 18.0,
@@ -120,7 +120,7 @@ class FormFields extends StatelessWidget {
               child: UserSlider(this.onSliderChanged, this.howManyWeeks)),
           Align(
             alignment: Alignment.bottomRight,
-            child: FittedBox(child: Text('$howManyWeeks weeks')),
+            child: FittedBox(child: Text('Durante $howManyWeeks semanas')),
           )
         ],
       ),

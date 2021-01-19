@@ -49,17 +49,30 @@ class Pill {
   }
 //=====================================================================
 
-
   //---------------------| Get the medicine image path |-------------------------
-  String get image{
-    switch(this.medicineForm){
-      case "Syrup": return "assets/images/syrup.png"; break;
-      case "Pill":return "assets/images/pills.png"; break;
-      case "Capsule":return "assets/images/capsule.png"; break;
-      case "Cream":return "assets/images/cream.png"; break;
-      case "Drops":return "assets/images/drops.png"; break;
-      case "Syringe":return "assets/images/syringe.png"; break;
-      default : return "assets/images/pills.png"; break;
+  String get image {
+    switch (this.medicineForm) {
+      case "Parcial":
+        return "assets/images/parcial.png";
+        break;
+      case "Quiz":
+        return "assets/images/quiz.png";
+        break;
+      case "Entrega":
+        return "assets/images/task.png";
+        break;
+      case "Importante":
+        return "assets/images/importante.png";
+        break;
+      case "Evento":
+        return "assets/images/evento.png";
+        break;
+      case "Otro":
+        return "assets/images/otro.png";
+        break;
+      default:
+        return "assets/images/otro.png";
+        break;
     }
   }
   //=============================================================================

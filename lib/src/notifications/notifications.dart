@@ -26,7 +26,6 @@ class Notifications {
   //---------------------------------| Show the notification in the specific time |-------------------------------
   Future showNotification(String title, String description, int time, int id,
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
-    print('DATOS $time');
     await flutterLocalNotificationsPlugin.zonedSchedule(
         id.toInt(),
         title,
@@ -37,7 +36,7 @@ class Notifications {
                 'medicines_id', 'medicines', 'medicines_notification_channel',
                 importance: Importance.high,
                 priority: Priority.high,
-                color: Colors.cyanAccent)),
+                color: Colors.blue)),
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);
@@ -58,17 +57,7 @@ class Notifications {
   //==========================================================================
 
   //-------------| function to inicialize local notifications |---------------------------
-  Future onSelectNotification(String payload) async {
-    showDialog(
-      context: _context,
-      builder: (_) {
-        return new AlertDialog(
-          title: Text("PayLoad"),
-          content: Text("Payload : $payload"),
-        );
-      },
-    );
-  }
+  Future onSelectNotification(String payload) async {}
 //======================================================================================
 
 }

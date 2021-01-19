@@ -1,6 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:animated_widgets/widgets/rotation_animated.dart';
-import 'package:animated_widgets/widgets/shake_animated_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -63,7 +60,7 @@ class _ReminderState extends State<Reminder> {
         MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
 
     final Widget addButton = FloatingActionButton(
-      elevation: 2.0,
+      elevation: 4.0,
       onPressed: () async {
         //refresh the pills from database
         await Navigator.pushNamed(context, "/addReminder")
@@ -74,13 +71,16 @@ class _ReminderState extends State<Reminder> {
         color: Colors.white,
         size: 24.0,
       ),
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Colors.blue[500],
     );
 
     return Scaffold(
       floatingActionButton: addButton,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       backgroundColor: Color.fromRGBO(248, 248, 248, 1),
+      appBar: AppBar(
+        title: Text('Recordatorios'),
+      ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -91,29 +91,6 @@ class _ReminderState extends State<Reminder> {
                 SizedBox(
                   height: deviceHeight * 0.04,
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5.0),
-                  child: Container(
-                    alignment: Alignment.topCenter,
-                    height: deviceHeight * 0.1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Recordatorio"),
-                        ShakeAnimatedWidget(
-                          enabled: true,
-                          duration: Duration(milliseconds: 2000),
-                          curve: Curves.linear,
-                          shakeAngle: Rotation.deg(z: 30),
-                          child: Icon(
-                            Icons.notifications_none,
-                            size: 42.0,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
                 SizedBox(
                   height: deviceHeight * 0.01,
                 ),
@@ -123,18 +100,8 @@ class _ReminderState extends State<Reminder> {
                 ),
                 SizedBox(height: deviceHeight * 0.03),
                 dailyPills.isEmpty
-                    ? SizedBox(
-                        width: double.infinity,
-                        height: 100,
-                        child: WavyAnimatedTextKit(
-                          textStyle: TextStyle(
-                              fontSize: 32.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                          text: ["Loading..."],
-                          isRepeatingAnimation: true,
-                          speed: Duration(milliseconds: 150),
-                        ),
+                    ? Center(
+                        child: Text('No hay Recordatorios este día'),
                       )
                     : MedicinesList(
                         dailyPills, setData, flutterLocalNotificationsPlugin)

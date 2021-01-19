@@ -12,6 +12,8 @@ class OperationDB {
         'CREATE TABLE IF NOT EXISTS schedules (id INTEGER PRIMARY KEY AUTOINCREMENT, day TEXT, startTime TEXT, endTime TEXT, subjectId INT NOT NULL, FOREIGN KEY(subjectId) REFERENCES subjects(id))');
     await db.execute(
         "CREATE TABLE Pills (id INTEGER PRIMARY KEY, name TEXT, amount TEXT, type TEXT, howManyWeeks INTEGER, medicineForm TEXT, time INTEGER, notifyId INTEGER)");
+    await db.execute(
+        'CREATE TABLE IF NOT EXISTS scores (id INTEGER PRIMARY KEY, score INTEGER, percent INTEGER, description TEXT, subjectId INT NOT NULL, FOREIGN KEY(subjectId) REFERENCES subjects(id))');
   }
 
   static _onConfigure(Database db) async {
@@ -19,7 +21,7 @@ class OperationDB {
   }
 
   static Future<Database> _openDB() async {
-    return openDatabase(join(await getDatabasesPath(), 'polinotes1.db'),
+    return openDatabase(join(await getDatabasesPath(), 'polinotes2.db'),
         onCreate: _onCreate, version: 1, onConfigure: _onConfigure);
   }
 
@@ -71,6 +73,11 @@ class OperationDB {
   static getDataById(int id, String tableName) async {
     Database db = await _openDB();
     return await db.query(tableName, where: 'id =  ?', whereArgs: [id]);
+  }
+
+  static getScoreBySubjectId(int id, String tableName) async {
+    Database db = await _openDB();
+    return await db.query(tableName, where: 'subjectId =  ?', whereArgs: [id]);
   }
 
   static getAllSchedule() async {

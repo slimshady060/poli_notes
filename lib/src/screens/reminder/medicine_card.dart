@@ -18,37 +18,43 @@ class MedicineCard extends StatelessWidget {
     final bool isEnd = DateTime.now().millisecondsSinceEpoch > medicine.time;
 
     return Card(
-        elevation: 0.0,
-        margin: EdgeInsets.symmetric(vertical: 7.0),
+        elevation: 2.0,
+        margin: EdgeInsets.symmetric(vertical: 4.0),
         color: Colors.white,
         child: ListTile(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             onLongPress: () => _showDeleteDialog(
                 context, medicine.name, medicine.id, medicine.notifyId),
             contentPadding:
-                EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+                EdgeInsets.symmetric(vertical: 20.0, horizontal: 15.0),
             title: Text(
               medicine.name,
               style: Theme.of(context).textTheme.headline1.copyWith(
                   color: Colors.black,
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                   decoration: isEnd ? TextDecoration.lineThrough : null),
-              maxLines: 1,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
             subtitle: Text(
-              "${medicine.amount} ${medicine.medicineForm}",
+              "${medicine.amount}",
               style: Theme.of(context).textTheme.headline5.copyWith(
                   color: Colors.grey[600],
                   fontSize: 15.0,
                   decoration: isEnd ? TextDecoration.lineThrough : null),
-              maxLines: 1,
+              maxLines: 5,
               overflow: TextOverflow.ellipsis,
             ),
             trailing: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                Text(
+                  "${medicine.medicineForm}",
+                  style: TextStyle(
+                      color: Colors.grey[500],
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                      decoration: isEnd ? TextDecoration.lineThrough : null),
+                ),
                 Text(
                   DateFormat("HH:mm").format(
                       DateTime.fromMillisecondsSinceEpoch(medicine.time)),
@@ -61,8 +67,8 @@ class MedicineCard extends StatelessWidget {
               ],
             ),
             leading: Container(
-              width: 60.0,
-              height: 60.0,
+              width: 40.0,
+              height: 40.0,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(50.0),
                 child: ColorFiltered(

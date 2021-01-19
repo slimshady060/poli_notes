@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:poli_notes/src/db/operationDB.dart';
 import 'package:poli_notes/src/models/subject.dart';
+import 'package:poli_notes/src/pages/subject_details.dart';
 
 class SubjectsPage extends StatefulWidget {
   @override
@@ -22,12 +23,14 @@ class _SubjectsPageState extends State<SubjectsPage> {
     subjects.forEach((subject) {
       setState(() {
         var subjectModel = Subject(
+            id: subject['id'],
             name: subject['name'],
             teacher: subject['teacher'],
             state: subject['state']);
         _subjectList.add(subjectModel);
       });
     });
+    print('hola2');
   }
 
   @override
@@ -55,16 +58,36 @@ Widget _getSubjectsList(cardList, context) {
         itemBuilder: (context, index) {
           return Card(
             child: ListTile(
+              onTap: () => _showDetails(cardList[index].toMap(), context),
               leading: CircleAvatar(
                 backgroundImage: AssetImage(
                     "assets/images/logo_poli-solid.png"), // no matter how big it is, it won't overflow
               ),
               title: Text(cardList[index].name),
               subtitle: Text(cardList[index].state),
-              trailing: Icon(Icons.more_vert),
+              trailing: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(cardList[index].teacher != null
+                    ? cardList[index].teacher
+                    : ''),
+              ),
               isThreeLine: true,
             ),
           );
         }),
   ));
+}
+
+_showDetails(content, context) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => SubjectDetails(),
+      // Pass the arguments as part of the RouteSettings. The
+      // DetailScreen reads the arguments from these settings.
+      settings: RouteSettings(
+        arguments: content,
+      ),
+    ),
+  );
 }

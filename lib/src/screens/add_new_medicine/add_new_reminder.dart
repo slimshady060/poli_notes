@@ -30,12 +30,13 @@ class _AddNewReminderState extends State<AddNewReminder> {
 
   //list of medicines forms objects
   final List<MedicineType> medicineTypes = [
-    MedicineType("Syrup", Image.asset("assets/images/syrup.png"), true),
-    MedicineType("Pill", Image.asset("assets/images/pills.png"), false),
-    MedicineType("Capsule", Image.asset("assets/images/capsule.png"), false),
-    MedicineType("Cream", Image.asset("assets/images/cream.png"), false),
-    MedicineType("Drops", Image.asset("assets/images/drops.png"), false),
-    MedicineType("Syringe", Image.asset("assets/images/syringe.png"), false),
+    MedicineType("Parcial", Image.asset("assets/images/parcial.png"), true),
+    MedicineType("Quiz", Image.asset("assets/images/quiz.png"), false),
+    MedicineType("Entrega", Image.asset("assets/images/task.png"), false),
+    MedicineType(
+        "Importante", Image.asset("assets/images/importante.png"), false),
+    MedicineType("Evento", Image.asset("assets/images/evento.png"), false),
+    MedicineType("Otro", Image.asset("assets/images/otro.png"), false),
   ];
 
   //-------------Pill object------------------
@@ -71,6 +72,9 @@ class _AddNewReminderState extends State<AddNewReminder> {
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       backgroundColor: Color.fromRGBO(248, 248, 248, 1),
+      appBar: AppBar(
+        title: Text('Nuevo recordatorio'),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(
@@ -78,35 +82,6 @@ class _AddNewReminderState extends State<AddNewReminder> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: deviceHeight * 0.05,
-                child: FittedBox(
-                  child: InkWell(
-                    child: Icon(Icons.arrow_back),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: deviceHeight * 0.01,
-              ),
-              Container(
-                padding: EdgeInsets.only(left: 15.0),
-                height: deviceHeight * 0.05,
-                child: FittedBox(
-                    child: Text(
-                  "Nuevo recordatorio",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline3
-                      .copyWith(color: Colors.black),
-                )),
-              ),
-              SizedBox(
-                height: deviceHeight * 0.03,
-              ),
               Container(
                 height: deviceHeight * 0.37,
                 child: Padding(
@@ -125,7 +100,7 @@ class _AddNewReminderState extends State<AddNewReminder> {
                   padding: const EdgeInsets.only(left: 16.0),
                   child: FittedBox(
                     child: Text(
-                      "Medicine form",
+                      "Tipo de recordatorio",
                       style: TextStyle(
                           color: Colors.grey[800],
                           fontSize: 18.0,
@@ -301,7 +276,7 @@ class _AddNewReminderState extends State<AddNewReminder> {
     if (setDate.millisecondsSinceEpoch <=
         DateTime.now().millisecondsSinceEpoch) {
       snackbar.showSnack(
-          "Check your medicine time and date", _scaffoldKey, null);
+          "La fecha y hora debe ser superior a la actual", _scaffoldKey, null);
     } else {
       //create pill object
       Pill pill = Pill(
@@ -320,25 +295,21 @@ class _AddNewReminderState extends State<AddNewReminder> {
         dynamic result =
             await OperationDB.insertData("Pills", pill.pillToMap());
         if (result == null) {
-          snackbar.showSnack("Something went wrong", _scaffoldKey, null);
+          snackbar.showSnack("Algo salió mal", _scaffoldKey, null);
           return;
         } else {
           //set the notification schneudele
           tz.initializeTimeZones();
-          tz.setLocalLocation(tz.getLocation('Europe/Warsaw'));
-          await _notifications.showNotification(
-              pill.name,
-              pill.amount + " " + pill.medicineForm + " " + pill.type,
-              time,
-              pill.notifyId,
-              flutterLocalNotificationsPlugin);
+          tz.setLocalLocation(tz.getLocation('America/Bogota'));
+          await _notifications.showNotification(pill.name, pill.amount, time,
+              pill.notifyId, flutterLocalNotificationsPlugin);
           setDate = setDate.add(Duration(milliseconds: 604800000));
           pill.time = setDate.millisecondsSinceEpoch;
           pill.notifyId = Random().nextInt(10000000);
         }
       }
       //---------------------------------------------------------------------------------------
-      snackbar.showSnack("Saved", _scaffoldKey, null);
+      snackbar.showSnack("Guardado", _scaffoldKey, null);
       Navigator.pop(context);
     }
   }
