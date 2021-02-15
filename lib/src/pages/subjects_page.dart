@@ -30,7 +30,6 @@ class _SubjectsPageState extends State<SubjectsPage> {
         _subjectList.add(subjectModel);
       });
     });
-    print('hola2');
   }
 
   @override

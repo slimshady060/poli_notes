@@ -9,28 +9,29 @@ class SubjectDetails extends StatefulWidget {
 }
 
 class _SubjectDetailsState extends State<SubjectDetails> {
-  List<Score> _scoreList = List<Score>();
   var subjectId;
-  @override
-  void initState() {
-    super.initState();
-  }
+  var scoreTotal = 0;
+  var countScores = 1;
+  var averageScore = 0;
 
-  _getScores(id, table) async {
-    _scoreList = List<Score>();
+  Future<List<Score>> _getScores(id, table) async {
+    List<Score> _scoreList = List<Score>();
     var _scores = await OperationDB.getScoreBySubjectId(id, table);
     _scores.forEach((score) {
-      if (this.mounted) {
-        var scoreModel = Score(
-            id: score['id'],
-            score: score['score'],
-            description: score['description'],
-            percent: score['percent'],
-            subjectId: score['subjectId']);
-        _scoreList.add(scoreModel);
-      }
+      var scoreModel = Score(
+          id: score['id'],
+          score: score['score'],
+          description: score['description'],
+          percent: score['percent'],
+          subjectId: score['subjectId']);
+      _scoreList.add(scoreModel);
     });
-    print('hola $_scoreList');
+    // print('en get');
+    // if (this.mounted) {
+    //   setState(() {
+    //   });
+    // }
+    return _scoreList;
   }
 
   @override
@@ -41,10 +42,9 @@ class _SubjectDetailsState extends State<SubjectDetails> {
     var subjectTeacher = subject['teacher'];
     var subjectState = subject['state'];
     subjectId = subject['id'];
-    _getScores(1, 'scores');
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registrar materias'),
+        title: Text('Mis calificaciones'),
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
@@ -70,32 +70,16 @@ class _SubjectDetailsState extends State<SubjectDetails> {
           ))),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 30, 0, 10),
-            child: Container(
-                child: Center(
-                    child: Text(
-              '3.5',
-              style: TextStyle(
-                  fontSize: 25,
-                  fontFamily: 'Roboto',
-                  color: Colors.blue[600],
-                  fontWeight: FontWeight.bold),
-            ))),
+            child: Container(child: Center(child: _scoreText())),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
-            child: Container(
-                child: Center(
-                    child: Text(
-              'Nota promedio en el 20%, necesitas 2.5 en el 90% restante.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 15,
-                fontFamily: 'Roboto',
-                color: Colors.blue[600],
-              ),
-            ))),
+            child: Container(child: Center(child: percentText())),
           ),
-          _dataTable()
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 70),
+            child: _dataTable(),
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -114,44 +98,111 @@ class _SubjectDetailsState extends State<SubjectDetails> {
                       arguments: subjectId,
                     ),
                   ),
-                )
+                ).then((value) => setState(() {}))
               }),
     );
   }
 
   Widget _dataTable() {
-    return DataTable(
-      columnSpacing: 25,
-      columns: [
-        DataColumn(label: Text('Detalle')),
-        DataColumn(label: Text('Nota')),
-        DataColumn(label: Text('Porcentaje')),
-        DataColumn(label: Text('Borrar'))
-      ],
-      rows: [
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('Parcial calculo 1')),
-            DataCell(Text('3')),
-            DataCell(Text('15%')),
-            DataCell(
-                IconButton(icon: Icon(Icons.remove_circle), onPressed: () {}))
-          ],
-        )
-      ],
-    );
-    //  rows: List.generate(_scoreList.length,
-    //      (index) => _getDataRow(_scoreList[index], index))
+    return FutureBuilder(
+        future: _getScores(subjectId, 'scores'),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return DataTable(
+                columnSpacing: 25,
+                columns: [
+                  DataColumn(label: Text('Detalle')),
+                  DataColumn(label: Text('Nota')),
+                  DataColumn(label: Text('Porcentaje')),
+                  DataColumn(label: Text('Borrar'))
+                ],
+                rows: List.generate(
+                    snapshot.data.length,
+                    (index) => DataRow(
+                          cells: <DataCell>[
+                            DataCell(Text(
+                                (snapshot.data[index].description).toString())),
+                            DataCell(
+                                Text(snapshot.data[index].score.toString())),
+                            DataCell(Text(
+                                snapshot.data[index].percent.toString() +
+                                    ' %')),
+                            DataCell(IconButton(
+                                icon: Icon(Icons.remove_circle),
+                                onPressed: () async {
+                                  await OperationDB.deleteData(
+                                      'scores', snapshot.data[index].id);
+                                  setState(() {});
+                                }))
+                          ],
+                        )));
+          }
+          return Text('No hay datos');
+        });
   }
 
-  DataRow _getDataRow(result, index) {
-    return DataRow(
-      cells: <DataCell>[
-        DataCell(Text(result['description'])),
-        DataCell(Text(result['score'])),
-        DataCell(Text(result['percent'])),
-        DataCell(IconButton(icon: Icon(Icons.remove_circle), onPressed: () {}))
-      ],
-    );
+  Widget _scoreText() {
+    return FutureBuilder(
+        future: _getScores(subjectId, 'scores'),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            double totalScore = 0;
+            snapshot.data.forEach((val) {
+              totalScore = (totalScore + val.score) * (val.percent / 100);
+            });
+            return Text(
+              '${totalScore.toStringAsFixed(2)}',
+              style: TextStyle(
+                  fontSize: 25,
+                  fontFamily: 'Roboto',
+                  color: Colors.blue[600],
+                  fontWeight: FontWeight.bold),
+            );
+          }
+          return Text(
+            '0',
+            style: TextStyle(
+                fontSize: 25,
+                fontFamily: 'Roboto',
+                color: Colors.blue[600],
+                fontWeight: FontWeight.bold),
+          );
+        });
+  }
+
+  Widget percentText() {
+    return FutureBuilder(
+        future: _getScores(subjectId, 'scores'),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            double totalPercent = 0;
+            double totalScore = 0;
+            snapshot.data.forEach((val) {
+              totalScore =
+                  (totalScore + (val.score).toDouble()) * (val.percent / 100);
+              totalPercent = totalPercent + val.percent;
+            });
+            return Text(
+              totalScore >= 3.0
+                  ? 'Has ganado la Materia, ¡Felicidades!'
+                  : 'Nota promedio en el ${totalPercent.toStringAsFixed(0)}%, necesitas ${(3.0 - totalScore).toStringAsFixed(2)} en el ${(100 - totalPercent).toStringAsFixed(0)}% restante.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 15,
+                fontFamily: 'Roboto',
+                color: Colors.blue[600],
+              ),
+            );
+          }
+          return Text(
+            'No hay notas parciales',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 15,
+              fontFamily: 'Roboto',
+              color: Colors.blue[600],
+            ),
+          );
+        });
   }
 }

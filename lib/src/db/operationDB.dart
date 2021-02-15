@@ -13,7 +13,7 @@ class OperationDB {
     await db.execute(
         "CREATE TABLE Pills (id INTEGER PRIMARY KEY, name TEXT, amount TEXT, type TEXT, howManyWeeks INTEGER, medicineForm TEXT, time INTEGER, notifyId INTEGER)");
     await db.execute(
-        'CREATE TABLE IF NOT EXISTS scores (id INTEGER PRIMARY KEY, score INTEGER, percent INTEGER, description TEXT, subjectId INT NOT NULL, FOREIGN KEY(subjectId) REFERENCES subjects(id))');
+        'CREATE TABLE IF NOT EXISTS scores (id INTEGER PRIMARY KEY, score REAL, percent INTEGER, description TEXT, subjectId INT NOT NULL, FOREIGN KEY(subjectId) REFERENCES subjects(id))');
   }
 
   static _onConfigure(Database db) async {
