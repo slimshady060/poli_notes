@@ -148,10 +148,10 @@ class _SubjectDetailsState extends State<SubjectDetails> {
           if (snapshot.hasData) {
             double totalScore = 0;
             snapshot.data.forEach((val) {
-              totalScore = (totalScore + val.score) * (val.percent / 100);
+              totalScore = totalScore + ((val.percent / 100) * val.score);
             });
             return Text(
-              '${totalScore.toStringAsFixed(2)}',
+              '${totalScore.toStringAsFixed(1)}',
               style: TextStyle(
                   fontSize: 25,
                   fontFamily: 'Roboto',
@@ -178,21 +178,42 @@ class _SubjectDetailsState extends State<SubjectDetails> {
             double totalPercent = 0;
             double totalScore = 0;
             snapshot.data.forEach((val) {
-              totalScore =
-                  (totalScore + (val.score).toDouble()) * (val.percent / 100);
+              totalScore = totalScore + ((val.percent / 100) * val.score);
               totalPercent = totalPercent + val.percent;
             });
-            return Text(
-              totalScore >= 3.0
-                  ? 'Has ganado la Materia, ¡Felicidades!'
-                  : 'Nota promedio en el ${totalPercent.toStringAsFixed(0)}%, necesitas ${(3.0 - totalScore).toStringAsFixed(2)} en el ${(100 - totalPercent).toStringAsFixed(0)}% restante.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 15,
-                fontFamily: 'Roboto',
-                color: Colors.blue[600],
-              ),
-            );
+            if (totalScore <= 0) {
+              return Text(
+                'Inicia ingresando notas',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontFamily: 'Roboto',
+                  color: Colors.blue[600],
+                ),
+              );
+            } else if (totalScore < 3 && totalPercent >= 100) {
+              return Text(
+                'Es tú nota final',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontFamily: 'Roboto',
+                  color: Colors.blue[600],
+                ),
+              );
+            } else {
+              return Text(
+                totalScore >= 3.0
+                    ? 'Has ganado la Materia, ¡Felicidades!'
+                    : 'Nota promedio en el ${totalPercent.toStringAsFixed(0)}%',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontFamily: 'Roboto',
+                  color: Colors.blue[600],
+                ),
+              );
+            }
           }
           return Text(
             'No hay notas parciales',

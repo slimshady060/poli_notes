@@ -5,15 +5,14 @@ import 'package:sqflite/sqflite.dart';
 
 class OperationDB {
   static _onCreate(Database db, int version) async {
-    print('VERSION%% $version');
     await db.execute(
         'CREATE TABLE IF NOT EXISTS subjects (id INTEGER PRIMARY KEY, name TEXT, teacher TEXT, state TEXT)');
     await db.execute(
-        'CREATE TABLE IF NOT EXISTS schedules (id INTEGER PRIMARY KEY AUTOINCREMENT, day TEXT, startTime TEXT, endTime TEXT, subjectId INT NOT NULL, FOREIGN KEY(subjectId) REFERENCES subjects(id))');
+        'CREATE TABLE IF NOT EXISTS schedules (id INTEGER PRIMARY KEY AUTOINCREMENT, day TEXT, startTime TEXT, endTime TEXT, subjectId INT NOT NULL, FOREIGN KEY(subjectId) REFERENCES subjects(id) ON DELETE CASCADE)');
     await db.execute(
         "CREATE TABLE Pills (id INTEGER PRIMARY KEY, name TEXT, amount TEXT, type TEXT, howManyWeeks INTEGER, medicineForm TEXT, time INTEGER, notifyId INTEGER)");
     await db.execute(
-        'CREATE TABLE IF NOT EXISTS scores (id INTEGER PRIMARY KEY, score REAL, percent INTEGER, description TEXT, subjectId INT NOT NULL, FOREIGN KEY(subjectId) REFERENCES subjects(id))');
+        'CREATE TABLE IF NOT EXISTS scores (id INTEGER PRIMARY KEY, score REAL, percent INTEGER, description TEXT, subjectId INT NOT NULL, FOREIGN KEY(subjectId) REFERENCES subjects(id) ON DELETE CASCADE)');
   }
 
   static _onConfigure(Database db) async {
@@ -21,7 +20,7 @@ class OperationDB {
   }
 
   static Future<Database> _openDB() async {
-    return openDatabase(join(await getDatabasesPath(), 'polinotes2.db'),
+    return openDatabase(join(await getDatabasesPath(), 'polinotesDemo.db'),
         onCreate: _onCreate, version: 1, onConfigure: _onConfigure);
   }
 
@@ -66,8 +65,10 @@ class OperationDB {
 
   static Future<void> delete() async {
     Database db = await _openDB();
-    db.delete('subjects');
-    db.delete('schedules');
+    await db.delete('scores');
+    await db.delete('Pills');
+    await db.delete('schedules');
+    await db.delete('subjects');
   }
 
   static getDataById(int id, String tableName) async {

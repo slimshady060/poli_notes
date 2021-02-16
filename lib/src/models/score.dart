@@ -1,6 +1,6 @@
 class Score {
   final int id;
-  final int score;
+  final double score;
   final int percent;
   final String description;
   final int subjectId;

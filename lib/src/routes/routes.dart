@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:poli_notes/src/pages/avatar_page.dart';
 import 'package:poli_notes/src/pages/create_subject.dart';
 import 'package:poli_notes/src/pages/home_page.dart';
-import 'package:poli_notes/src/pages/input_page.dart';
 import 'package:poli_notes/src/pages/listview_page.dart';
 import 'package:poli_notes/src/pages/login.page.dart';
 import 'package:poli_notes/src/pages/new_score.dart';

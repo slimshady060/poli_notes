@@ -11,7 +11,7 @@ class NewScore extends StatefulWidget {
 class _NewScoreState extends State<NewScore> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final Snackbar snackbar = Snackbar();
-  int _score;
+  double _score;
   int _percent;
   String _description;
   int subjectId;
@@ -63,7 +63,7 @@ class _NewScoreState extends State<NewScore> {
       onChanged: (valor) {
         setState(() {
           if (valor != '') {
-            _score = int.parse(valor);
+            _score = double.parse(valor);
           } else {
             _score = -1;
           }
